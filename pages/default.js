@@ -17,10 +17,6 @@ export default class DefaultPage {
 		return browser;
 	}
 
-	redirectToQa() {
-		browser.url('/bundles/page.qa.html')
-	}
-
 	waitForUrl(value, timeout, revert) {
 		let url, actual;
 		try {

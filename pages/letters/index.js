@@ -6,41 +6,29 @@ class LettersPage extends DefaultPage {
 	}
 
 	get locators () {
-		const container = '[data-qa-id="dataset-letters"]';
+		const container = '.dataset__items';
 
 		return {
 			container,
-			letterBySubject: (subject) => {
-				// subject = subject === '' ? '<Без темы>' : subject.replace('"', '\\"');
-
-				return `${this.locators.container} [data-qa-id="letter-item:subject:${subject}"]`;
-			}
+			firstLetterFlag: () => {return `${this.locators.container} a.llc:nth-child(1) button.ll-rs`;}
 		}
 	}
 
 	/**
-	 * Проверяет есть ли письмо с темой
-	 *
-	 * @param {string} subject
-	 * @param {boolean} reverse
+	 * Проверяет, является ли первое письмо прочитанным.
 	 * @returns {boolean}
 	 */
-	hasLetterBySubject (subject, reverse = false) {
-		try {
-			this.page.waitForVisible(this.locators.letterBySubject(subject), null, reverse);
-
-			return true;
-		} catch (err) {
-			return false;
-		}
+	hasFirstLetterReadFlag() {
+		this.page.waitForVisible(this.locators.firstLetterFlag());
+		let is_active = this.hasClass(this.locators.firstLetterFlag(), "ll-rs_is-active");
+		return is_active;
 	}
 
 	/**
-	 * Открыть письмо по теме
-	 * @param  {string} subject
+	 * Нажать на кнопку "прочитано" для первого письма."
 	 */
-	openBySubject (subject) {
-		this.page.click(this.locators.letterBySubject(subject));
+	clickOnFlag() {
+		this.page.click(this.locators.firstLetterFlag());
 	}
 
 }
