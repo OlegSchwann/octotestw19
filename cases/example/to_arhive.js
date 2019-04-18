@@ -1,8 +1,13 @@
 import main from '../../steps/main';
 import lettersSteps from '../../steps/letters/index'
 
+import inbox  from '../../steps/inbox/inbox';
+import letter from '../../steps/letter/letter';
+import arhive from '../../steps/arhive/arhive';
+
+
 describe('test id', () => {
-    const message = 'Авторизоваться, поменять статус письма с прочитанного на непрочитанное (и наоборот), убедиться, что статус изменился.';
+    const message = 'Send first letter to archive.';
     it(message, () => {
         let login = process.env['LOGIN'];
         let password = process.env['PASSWORD'];
@@ -12,10 +17,18 @@ describe('test id', () => {
 
         main.open('https://mail.ru');
 
-        main.login(login, password);
+        main.login('olegschwann@inbox.ru', 'Z1iOaptPA1x');
 
         main.open('https://octavius.mail.ru/inbox/');
 
-        lettersSteps.checkReadFlagChanged();
+        inbox.openFirstLetter();
+
+        let id = letter.getLetterId();
+
+        letter.sendToArhive();
+
+        main.open('https://octavius.mail.ru/archive/');
+
+        arhive.findLetterById(id);
     });
 });

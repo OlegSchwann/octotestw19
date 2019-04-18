@@ -53,6 +53,22 @@ export default class DefaultPage {
 		}
 	}
 
+	waitForUrlStartWith(value, timeout) {
+		let url;
+		try {
+			return browser.waitUntil(() => {
+				url = browser.getUrl();
+				return url.includes(value);
+			}, timeout, '');
+		} catch (error) {
+			let message = 'Could not wait for required url:';
+			message += `\n\tActual: ${url}`;
+			message += `\n\tExpected: /^${value}.*/`;
+
+			throw new Error(message);
+		}
+	}
+
 	hasClass(selector, name) {
 		let attribute;
 
